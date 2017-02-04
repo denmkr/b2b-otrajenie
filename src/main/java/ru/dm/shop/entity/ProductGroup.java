@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Denis on 12.05.16.
  */
 @Entity
-@Table(name = "product_groups", schema = "public", catalog = "mvc")
+@Table(name = "product_groups", schema = "public")
 public class ProductGroup {
     private Long id;
     private String groupId;

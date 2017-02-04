@@ -6,9 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.dm.shop.entity.Cart;
 import ru.dm.shop.entity.CartProduct;
-import ru.dm.shop.entity.Order;
-import ru.dm.shop.repository.OrderRepository;
-import ru.dm.shop.service.OrderService;
 import ru.dm.shop.service.UserService;
 
 import javax.annotation.Resource;

@@ -27,8 +27,8 @@ public class RESTController {
     UserService userService;
     @Autowired
     ProductService productService;
-    @Autowired
-    OrderService orderService;
+    /* @Autowired
+    OrderService orderService; */
     @Autowired
     GroupService groupService;
     @Autowired
@@ -83,7 +83,7 @@ public class RESTController {
         return groups;
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public @ResponseBody
     List<Order> getAllOrders() {
         List<Order> orders = orderService.getOrders();
@@ -94,7 +94,7 @@ public class RESTController {
         }
 
         return orders;
-    }
+    } */
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public @ResponseBody

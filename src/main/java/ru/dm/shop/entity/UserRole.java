@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by Denis on 10.08.16.
  */
 @Entity
-@Table(name = "user_roles", schema = "public", catalog = "mvc")
+@Table(name = "user_roles", schema = "public")
 public class UserRole {
     private Long userRoleId;
     private Long userId;

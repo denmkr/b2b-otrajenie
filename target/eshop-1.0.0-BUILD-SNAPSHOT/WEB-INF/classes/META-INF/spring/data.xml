@@ -34,9 +34,9 @@
 
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
     <property name="driverClassName" value="org.postgresql.Driver"></property>
-    <property name="username" value="postgres"></property>
+    <property name="username" value="alt"></property>
     <property name="password" value="postgres"></property>
-    <property name="url" value="jdbc:postgresql://localhost:5432/mvc"></property>
+    <property name="url" value="jdbc:postgresql://localhost:5432/otrajenie"></property>
   </bean>
 
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

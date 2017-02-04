@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.dm.shop.entity.Cart;
 import ru.dm.shop.entity.CartProduct;
 import ru.dm.shop.service.CartProductService;
-import ru.dm.shop.service.OrderService;
 import ru.dm.shop.service.UserService;
 
 import javax.activation.DataHandler;

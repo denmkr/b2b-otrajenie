@@ -11,20 +11,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import ru.dm.shop.entity.Product;
 import ru.dm.shop.entity.User;
-import ru.dm.shop.service.*;
-
-
-import java.util.List;
+import ru.dm.shop.service.GroupService;
+import ru.dm.shop.service.ProductService;
+import ru.dm.shop.service.UserRoleService;
+import ru.dm.shop.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminPanelController {
-
-    @Autowired
-    OrderService orderService;
+    /* @Autowired
+    OrderService orderService; */
     @Autowired
     UserService userService;
     @Autowired
@@ -37,7 +35,7 @@ public class AdminPanelController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String admin(ModelMap model) {
         model.addAttribute("users_count", userService.countOfUsers());
-        model.addAttribute("orders_count", orderService.countOfOrdersToday());
+        //model.addAttribute("orders_count", orderService.countOfOrdersToday());
         return "admin";
     }
 
@@ -46,13 +44,13 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String orders(ModelMap model) {
-        model.addAttribute("orders", orderService.getOrders());
+      // model.addAttribute("orders", orderService.getOrders());
         return "admin/orders";
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public String ordersAjax(ModelMap model) {
-        model.addAttribute("orders", orderService.getOrders());
+      //  model.addAttribute("orders", orderService.getOrders());
         return "admin/ajax/orders_content";
     }
 
@@ -239,23 +237,23 @@ public class AdminPanelController {
     @RequestMapping(value = "/information", method = RequestMethod.GET)
     public String information(ModelMap model) {
         model.addAttribute("users_count", userService.countOfUsers());
-        model.addAttribute("orders_count", orderService.countOfOrdersToday());
+       //  model.addAttribute("orders_count", orderService.countOfOrdersToday());
         return "admin/information";
     }
 
     @RequestMapping(value = "/information", method = RequestMethod.POST)
     public String informationAjax(ModelMap model) {
         model.addAttribute("users_count", userService.countOfUsers());
-        model.addAttribute("orders_count", orderService.countOfOrdersToday());
+       // model.addAttribute("orders_count", orderService.countOfOrdersToday());
 
         return "admin/ajax/information_content";
     }
 
-    @RequestMapping(value = "/information/json", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/information/json", method = RequestMethod.GET)
     public @ResponseBody
     List<Long> json(ModelMap model) {
         return orderService.getOrdersCounts();
-    }
+    } */
 
 
 }
