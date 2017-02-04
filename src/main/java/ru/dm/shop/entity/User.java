@@ -1,7 +1,13 @@
 package ru.dm.shop.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Denis on 10.08.16.
@@ -15,6 +21,7 @@ public class User {
     private Boolean enabled;
     private String email;
     private Timestamp date;
+    private List<Order> orders;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,6 +99,19 @@ public class User {
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
 
         return true;
+    }
+
+
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name="user_id")
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

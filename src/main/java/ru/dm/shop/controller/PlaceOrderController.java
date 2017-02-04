@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.dm.shop.entity.Cart;
 import ru.dm.shop.entity.CartProduct;
 import ru.dm.shop.service.CartProductService;
+import ru.dm.shop.service.OrderService;
 import ru.dm.shop.service.UserService;
 
 import javax.activation.DataHandler;
@@ -49,6 +50,7 @@ public class PlaceOrderController {
     CartProductService cartProductService;
     @Autowired
     OrderService orderService;
+
     @Autowired
     UserService userService;
 
@@ -70,13 +72,13 @@ public class PlaceOrderController {
         if (authentication instanceof AnonymousAuthenticationToken) {
             if (session.getAttribute("cart") == null) session.setAttribute("cart", new Cart());
             cart = (Cart) session.getAttribute("cart");
-            orderService.createOrder(cart);
+            //orderService.createOrder(cart);
 
             session.setAttribute("cart", null); // Очищаем корзину
         }
         else {
             cart = cartProductService.getCart();
-            orderService.createOrder(cart);
+            //orderService.createOrder(cart);
 
             cartProductService.removeCart(cart);
         }
