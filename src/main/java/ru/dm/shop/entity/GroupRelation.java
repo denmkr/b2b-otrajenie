@@ -5,7 +5,6 @@ package ru.dm.shop.entity;
  */
 
 public class GroupRelation {
-
     private String groupId;
     private String childGroupId;
 
