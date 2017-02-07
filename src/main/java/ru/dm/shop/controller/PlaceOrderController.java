@@ -43,11 +43,12 @@ import java.util.Scanner;
 @Controller
 @RequestMapping("/placeorder")
 public class PlaceOrderController {
-
     @Autowired
     JavaMailSender mailSender;
+
     @Autowired
     CartProductService cartProductService;
+
     @Autowired
     OrderService orderService;
 
@@ -72,18 +73,17 @@ public class PlaceOrderController {
         if (authentication instanceof AnonymousAuthenticationToken) {
             if (session.getAttribute("cart") == null) session.setAttribute("cart", new Cart());
             cart = (Cart) session.getAttribute("cart");
-            //orderService.createOrder(cart);
 
             session.setAttribute("cart", null); // Очищаем корзину
         }
         else {
             cart = cartProductService.getCart();
-            //orderService.createOrder(cart);
-
             cartProductService.removeCart(cart);
         }
 
-        htmlMail(cart, email, path);
+       htmlMail(cart, email, path);
+
+        orderService.create(cart);
 
         return "redirect:/cart";
     }

@@ -13,16 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dm.shop.entity.Product;
 import ru.dm.shop.entity.User;
-import ru.dm.shop.service.GroupService;
-import ru.dm.shop.service.ProductService;
-import ru.dm.shop.service.UserRoleService;
-import ru.dm.shop.service.UserService;
+import ru.dm.shop.service.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminPanelController {
-    /* @Autowired
-    OrderService orderService; */
+    @Autowired
+    OrderService orderService;
     @Autowired
     UserService userService;
     @Autowired
@@ -44,13 +41,13 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String orders(ModelMap model) {
-      // model.addAttribute("orders", orderService.getOrders());
+        model.addAttribute("orders", orderService.findAll());
         return "admin/orders";
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public String ordersAjax(ModelMap model) {
-      //  model.addAttribute("orders", orderService.getOrders());
+        model.addAttribute("orders", orderService.findAll());
         return "admin/ajax/orders_content";
     }
 
@@ -249,12 +246,13 @@ public class AdminPanelController {
         return "admin/ajax/information_content";
     }
 
-    /* @RequestMapping(value = "/information/json", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/information/json", method = RequestMethod.GET)
     public @ResponseBody
     List<Long> json(ModelMap model) {
         return orderService.getOrdersCounts();
-    } */
-
-
+    }
+    */
 }
+
+
 

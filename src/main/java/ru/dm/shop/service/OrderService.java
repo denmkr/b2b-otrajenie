@@ -1,5 +1,6 @@
 package ru.dm.shop.service;
 
+import ru.dm.shop.entity.Cart;
 import ru.dm.shop.entity.Order;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by alt on 04.02.17.
  */
 public interface OrderService {
-    Order create(Order order);
+    Order create(Cart cart);
 
     Order delete(long id);
 

@@ -9,11 +9,8 @@ import javax.persistence.*;
 @Table(name = "cart_products", schema = "public")
 public class CartProduct {
     private Long id;
-
     private Long userId;
-    private Integer count;
-
-    /* */
+    private Long count;
     private Product product;
 
     @ManyToOne(targetEntity = Product.class)
@@ -21,10 +18,10 @@ public class CartProduct {
     public Product getProduct() {
         return product;
     }
+
     public void setProduct(Product product) {
         this.product = product;
     }
-    /* */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,11 +46,11 @@ public class CartProduct {
 
     @Basic
     @Column(name = "count")
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(long count) {
         this.count = count;
     }
 

@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dm.shop.entity.CartProduct;
 import ru.dm.shop.entity.Product;
 
-import java.util.List;
-
 /**
  * Created by Denis on 26.04.16.
  */
@@ -24,7 +22,7 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Long> 
     @Modifying
     @Transactional
     @Query("UPDATE CartProduct cartProduct SET cartProduct.count = ?1 where cartProduct.userId = ?2 and cartProduct.product = ?3")
-    void updateProductInCart(int count, long userId, Product product);
+    void updateProductInCart(long count, long userId, Product product);
 
     @Modifying
     @Transactional

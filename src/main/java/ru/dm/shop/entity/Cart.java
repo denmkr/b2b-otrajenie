@@ -2,7 +2,6 @@ package ru.dm.shop.entity;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
@@ -58,8 +57,8 @@ public class Cart {
         return cartProducts;
     }
 
-    public int getSizeByArticule(String articule) {
-        int size = 0;
+    public Long getSizeByArticule(String articule) {
+        Long size = 0L;
 
         for (CartProduct cartProduct : cartProducts) {
             if (cartProduct.getProduct().getArticule().equals(articule)) {
