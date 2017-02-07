@@ -1,6 +1,11 @@
 package ru.dm.shop.entity;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by alt on 07.02.17.
@@ -12,6 +17,7 @@ public class OrderProduct {
     private Long quantity;
     private Order order;
     private Product product;
+    private Float price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +40,7 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    @Cascade(CascadeType.ALL)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     public Order getOrder() {
@@ -43,7 +50,8 @@ public class OrderProduct {
     public void setOrder(Order order) {
         this.order = order;
     }
-
+    
+    @Cascade(CascadeType.ALL)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     public Product getProduct() {
@@ -52,6 +60,16 @@ public class OrderProduct {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Basic
+    @Column(name = "price")
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     @Override
