@@ -37,15 +37,16 @@ public class Cart {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        for (GrantedAuthority authority: authentication.getAuthorities()) {
-            if (authority.getAuthority().equals("ROLE_PARTNER")) {
-                for (CartProduct cartProduct : cartProducts) {
-                    price += cartProduct.getProduct().getWholesalePrice() * cartProduct.getCount();
-                }
-            }
-            else {
-                for (CartProduct cartProduct : cartProducts) {
-                    price += cartProduct.getProduct().getRetailPrice() * cartProduct.getCount();
+        if (authentication != null) {
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_PARTNER")) {
+                    for (CartProduct cartProduct : cartProducts) {
+                        price += cartProduct.getProduct().getWholesalePrice() * cartProduct.getCount();
+                    }
+                } else {
+                    for (CartProduct cartProduct : cartProducts) {
+                        price += cartProduct.getProduct().getRetailPrice() * cartProduct.getCount();
+                    }
                 }
             }
         }
