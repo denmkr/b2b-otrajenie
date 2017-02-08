@@ -30,7 +30,7 @@ public final class GlobalControllerAdvice {
     public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = new User();
-        user.setUsername(authentication.getName());
+        if (authentication != null)   user.setUsername(authentication.getName());
         return user;
     }
 
@@ -44,6 +44,7 @@ public final class GlobalControllerAdvice {
         }
         else cart = cartProductService.getCart();
         Num size = new Num();
+
         size.setNum(cart.getSize());
 
         model.addAttribute("cart_size", size);
@@ -59,10 +60,9 @@ public final class GlobalControllerAdvice {
         }
         else cart = cartProductService.getCart();
         Num price = new Num();
+
         price.setfNum(cart.getPrice());
 
         model.addAttribute("cart_price", price);
     }
-
-
 }

@@ -72,10 +72,14 @@ public class CartProductServiceImpl implements CartProductService {
     public Cart getCart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PageRequest pageRequest = new PageRequest(0, 100, Sort.Direction.ASC, "product");
-        Page<CartProduct> cartProducts = cartProductRepository.findByUserId(userService.findByUsername(authentication.getName()).getId(), pageRequest);
+
+        Page<CartProduct> cartProducts = null;
+
+        if (authentication != null) cartProducts = cartProductRepository.findByUserId(userService.findByUsername(authentication.getName()).getId(), pageRequest);
 
         Cart cart = new Cart();
-        cart.setProducts(cartProducts.getContent());
+
+        if (cartProducts != null) cart.setProducts(cartProducts.getContent());
 
         return cart;
     }
