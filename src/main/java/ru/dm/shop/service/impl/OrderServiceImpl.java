@@ -37,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order create(Cart cart) {
         Order order = new Order();
+        orderRepository.save(order);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -51,16 +52,18 @@ public class OrderServiceImpl implements OrderService {
             orderProduct.setProduct(cartProduct.getProduct());
             orderProduct.setQuantity(cartProduct.getCount());
 
-            if (user != null && userRoleService.findByUserId(user.getId()).getAuthority().equals("ROLE_PARTNER") ) {
-                orderProduct.setPrice(cartProduct.getProduct().getWholesalePrice());
-            } else {
-                orderProduct.setPrice(cartProduct.getProduct().getRetailPrice());
+            if (user != null) {
+                if (((userRoleService.findByUserId(user.getId())).getAuthority()).equals("ROLE_PARTNER")) {
+                    orderProduct.setPrice(cartProduct.getProduct().getWholesalePrice());
+                } else {
+                    orderProduct.setPrice(cartProduct.getProduct().getRetailPrice());
+                }
             }
 
             orderProduct.setOrder(order);
             orderProductService.create(orderProduct);
         }
-        return  orderRepository.saveAndFlush(order);
+        return orderRepository.saveAndFlush(order);
     }
 
     @Override
@@ -85,5 +88,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(long id) {
         return orderRepository.findOne(id);
+    }
+
+    @Override
+    public List<Order> findAllByUser(User user) {
+        return orderRepository.findAllByUser(user);
     }
 }
