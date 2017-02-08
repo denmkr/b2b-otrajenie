@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
             orderProduct.setProduct(cartProduct.getProduct());
             orderProduct.setQuantity(cartProduct.getCount());
 
-            if (userRoleService.findByUserId(user.getId()).getAuthority().equals("ROLE_PARTNER") ) {
+            if (user != null && userRoleService.findByUserId(user.getId()).getAuthority().equals("ROLE_PARTNER") ) {
                 orderProduct.setPrice(cartProduct.getProduct().getWholesalePrice());
             } else {
                 orderProduct.setPrice(cartProduct.getProduct().getRetailPrice());
