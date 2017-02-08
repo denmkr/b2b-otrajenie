@@ -40,7 +40,7 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
-    @Cascade(CascadeType.ALL)
+    @Cascade(CascadeType.MERGE)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     public Order getOrder() {
@@ -51,7 +51,7 @@ public class OrderProduct {
         this.order = order;
     }
     
-    @Cascade(CascadeType.ALL)
+    @Cascade(CascadeType.MERGE)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     public Product getProduct() {
