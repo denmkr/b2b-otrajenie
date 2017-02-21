@@ -22,7 +22,13 @@
         </div>
 
         <div class="block blue">
-            <div class="number">${orders_count}</div>
+            <div class="number">
+            <#if orders_count??>
+                 ${orders_count}
+            <#else>
+                Нет информации
+            </#if>
+            </div>
             <div class="text">Заказов сегодня</div>
         </div>
 

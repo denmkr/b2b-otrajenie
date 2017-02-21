@@ -75,13 +75,12 @@ public class PlaceOrderController {
             cart = (Cart) session.getAttribute("cart");
 
             session.setAttribute("cart", null); // Очищаем корзину
-        }
-        else {
+        } else {
             cart = cartProductService.getCart();
             cartProductService.removeCart(cart);
         }
 
-       htmlMail(cart, email, path);
+        htmlMail(cart, email, path);
 
         orderService.create(cart);
 
@@ -120,7 +119,7 @@ public class PlaceOrderController {
         String htmlMsg = "";
 
         Scanner in = new Scanner(new File(path + "mailstart.html"));
-        while(in.hasNext()) htmlMsg += in.nextLine() + "\r\n";
+        while (in.hasNext()) htmlMsg += in.nextLine() + "\r\n";
         in.close();
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -141,7 +140,7 @@ public class PlaceOrderController {
         }
 
         in = new Scanner(new File(path + "mailend.html"));
-        while(in.hasNext()) htmlMsg += in.nextLine() + "\r\n";
+        while (in.hasNext()) htmlMsg += in.nextLine() + "\r\n";
         in.close();
 
         mimeMessage.setContent(htmlMsg, "text/html; charset=utf-8");
@@ -177,7 +176,7 @@ public class PlaceOrderController {
 
         PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100.0f);
-        table.setWidths(new float[] {2.0f, 4.0f, 2.0f, 2.0f});
+        table.setWidths(new float[]{2.0f, 4.0f, 2.0f, 2.0f});
         table.setSpacingBefore(10);
 
         PdfPCell cell = new PdfPCell();

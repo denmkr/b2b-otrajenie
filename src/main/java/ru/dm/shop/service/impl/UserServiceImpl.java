@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User create(User user) {
-        System.out.println(user.getPassword());
         BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(12);
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         user.setEnabled(true);
