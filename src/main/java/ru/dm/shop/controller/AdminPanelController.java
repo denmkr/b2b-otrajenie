@@ -32,10 +32,9 @@ public class AdminPanelController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String admin(ModelMap model) {
         model.addAttribute("users_count", userService.countOfUsers());
-        //model.addAttribute("orders_count", orderService.countOfOrdersToday());
+        model.addAttribute("orders_count", orderService.countOfOrdersToday());
         return "admin";
     }
-
 
     /* Страница заказов */
 

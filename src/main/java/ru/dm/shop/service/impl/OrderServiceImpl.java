@@ -94,4 +94,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findAllByUser(User user) {
         return orderRepository.findAllByUser(user);
     }
+
+    @Override
+    public Long countOfOrdersToday() {
+        return orderRepository.countOfOrdersToday();
+    }
 }
