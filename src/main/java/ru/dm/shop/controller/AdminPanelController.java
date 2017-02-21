@@ -6,6 +6,9 @@ package ru.dm.shop.controller;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,20 +32,34 @@ public class AdminPanelController {
     @Autowired
     UserRoleService userRoleService;
 
+    Authentication authentication;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String admin(ModelMap model) {
-        model.addAttribute("users_count", userService.countOfUsers());
-        model.addAttribute("orders_count", orderService.countOfOrdersToday());
-        return "admin";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users_count", userService.countOfUsers());
+            model.addAttribute("orders_count", orderService.countOfOrdersToday());
+            return "admin";
+        }
     }
 
     /* Страница заказов */
 
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String orders(ModelMap model) {
-        model.addAttribute("orders", orderService.findAll());
+        authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return "admin/orders";
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("orders", orderService.findAll());
+
+            return "admin/orders";
+        }
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
@@ -56,8 +73,14 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(ModelMap model) {
-        model.addAttribute("users", userService.findAll());
-        return "admin/users";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users", userService.findAll());
+            return "admin/users";
+        }
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
@@ -68,8 +91,13 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/users/add", method = RequestMethod.GET)
     public String addUsersPage(ModelMap model) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return "admin/users_add";
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            return "admin/users_add";
+        }
     }
 
     @RequestMapping(value = "/users/add", method = RequestMethod.POST)
@@ -101,8 +129,14 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/users/remove", method = RequestMethod.GET)
     public String removeUsersPage(ModelMap model) {
-        model.addAttribute("users", userService.findAll());
-        return "admin/users_remove";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users", userService.findAll());
+            return "admin/users_remove";
+        }
     }
 
     @RequestMapping(value = "/users/remove", method = RequestMethod.POST)
@@ -123,9 +157,15 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/users/update", method = RequestMethod.GET)
     public String updateUsersPage(ModelMap model) {
-        model.addAttribute("users", userService.findAll());
+        authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return "admin/users_change";
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users", userService.findAll());
+
+            return "admin/users_change";
+        }
     }
 
     @RequestMapping(value = "/users/update", method = RequestMethod.POST)
@@ -151,8 +191,14 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public String products(ModelMap model) {
-        model.addAttribute("products", productService.findAll());
-        return "admin/products";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("products", productService.findAll());
+            return "admin/products";
+        }
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
@@ -163,8 +209,14 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/products/add", method = RequestMethod.GET)
     public String addProductsPage(ModelMap model) {
-        model.addAttribute("groups", groupService.findAll());
-        return "admin/products_add";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("groups", groupService.findAll());
+            return "admin/products_add";
+        }
     }
 
     @RequestMapping(value = "/products/add", method = RequestMethod.POST)
@@ -200,7 +252,13 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/products/remove", method = RequestMethod.GET)
     public String removeProductPage(ModelMap model) {
-        return "admin/products_remove";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            return "admin/products_remove";
+        }
     }
 
     @RequestMapping(value = "/products/remove", method = RequestMethod.POST)
@@ -219,7 +277,13 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/products/upload", method = RequestMethod.GET)
     public String updateProduct(ModelMap model) {
-        return "admin/products_upload";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            return "admin/products_upload";
+        }
     }
 
     @RequestMapping(value = "/products/upload", method = RequestMethod.POST)
@@ -233,17 +297,29 @@ public class AdminPanelController {
 
     @RequestMapping(value = "/information", method = RequestMethod.GET)
     public String information(ModelMap model) {
-        model.addAttribute("users_count", userService.countOfUsers());
-       //  model.addAttribute("orders_count", orderService.countOfOrdersToday());
-        return "admin/information";
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users_count", userService.countOfUsers());
+            model.addAttribute("orders_count", orderService.countOfOrdersToday());
+            return "admin/information";
+        }
     }
 
     @RequestMapping(value = "/information", method = RequestMethod.POST)
     public String informationAjax(ModelMap model) {
-        model.addAttribute("users_count", userService.countOfUsers());
-       // model.addAttribute("orders_count", orderService.countOfOrdersToday());
+        authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return "admin/ajax/information_content";
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/403";
+        } else {
+            model.addAttribute("users_count", userService.countOfUsers());
+            model.addAttribute("orders_count", orderService.countOfOrdersToday());
+
+            return "admin/ajax/information_content";
+        }
     }
 
    /* @RequestMapping(value = "/information/json", method = RequestMethod.GET)
