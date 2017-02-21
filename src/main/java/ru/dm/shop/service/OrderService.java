@@ -21,4 +21,6 @@ public interface OrderService {
     Order findById(long id);
 
     List<Order> findAllByUser(User user);
+
+    Long countOfOrdersToday();
 }
