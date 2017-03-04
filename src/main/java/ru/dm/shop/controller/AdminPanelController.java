@@ -42,6 +42,7 @@ public class AdminPanelController {
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public String orders(ModelMap model) {
         model.addAttribute("orders", orderService.findAll());
+
         return "admin/orders";
     }
 

@@ -2,6 +2,8 @@ package ru.dm.shop.entity;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -17,6 +19,7 @@ public class Order {
     private Timestamp date;
     private User user;
     private List<Product> products;
+    private List<OrderProduct> orderProducts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,5 +85,17 @@ public class Order {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name="order_id")
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }
