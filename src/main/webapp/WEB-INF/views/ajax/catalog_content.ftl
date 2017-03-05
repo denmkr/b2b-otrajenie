@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 
 <div class="panel_container">
 
@@ -88,13 +89,13 @@
                     <td><a>${product.retailPrice}</a> ${product.currency}</td>
                 </@security.authorize>
                 <td data-balloon="Введите кол-во товара" data-balloon-pos="down" class="cart">
-                    <form class="cart_form">
+                    <@form.form class="cart_form">
                         <input name="amount" maxlength="2" type="text" placeholder="0">
                         <div class="buttons">
                             <div class="plus"><img src="/resources/images/user_down.png"></div>
                             <div class="minus"><img src="/resources/images/user_down.png"></div>
                         </div>
-                    </form>
+                    </@form.form>
                 </td>
                 <td data-balloon="Добавить в корзину" data-balloon-pos="up" class="add"><img src="/resources/images/addcart.png"></td>
                 <td><a>-</a></td>

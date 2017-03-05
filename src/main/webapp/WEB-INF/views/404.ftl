@@ -17,7 +17,6 @@
     <script type="text/javascript" src="/resources/js/jquery.sticky.js"></script>
     <script type="text/javascript" src="/resources/js/jquery.stellar.js"></script>
     <script type="text/javascript" src="/resources/js/javascript.js"></script>
-
 </head>
 <body>
 
