@@ -38,7 +38,7 @@ public class SignUpController {
         User user = new User();
         user.setUsername(StringEscapeUtils.escapeHtml4(form.getUsername()));
         user.setEmail(StringEscapeUtils.escapeHtml4(form.getEmail()));
-        user.setPassword(StringEscapeUtils.escapeHtml4(form.getPassword()));
+        user.setPassword(form.getPassword());
 
         userService.create(user);
         userRoleService.createUser(user);
