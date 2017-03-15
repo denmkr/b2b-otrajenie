@@ -2,6 +2,8 @@ var groupId = "";
 var mode = "current";
 
 $(document).ready(function () {
+    token = $("meta[name='_csrf']").attr("content");
+    header = $("meta[name='_csrf_header']").attr("content");
 
     setCurrentElemSidebar();
     setCurrentFilters();
@@ -61,8 +63,8 @@ $(document).ready(function () {
 
 
 function filterProducts() {
-
     var xmlhttp;
+
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     }
@@ -421,6 +423,7 @@ $(document).on("click", ".modal .content .cart .button", function() {
 
         xmlhttp.open("POST", "/cart/add", true);
         xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.setRequestHeader(header,token);
 
         xmlhttp.send(msg);
     }
@@ -509,7 +512,6 @@ $(document).on("click", ".table_panel .catalog_table tbody td.add img", function
 
             xmlhttp2.open("GET", "/cart/getprice", true);
             xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
             xmlhttp2.send("");
         }
 
@@ -517,6 +519,7 @@ $(document).on("click", ".table_panel .catalog_table tbody td.add img", function
 
         xmlhttp.open("POST", "/cart/add", true);
         xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.setRequestHeader(header,token);
 
         xmlhttp.send(msg);
     }
@@ -551,7 +554,6 @@ function getProduct(articule) {
 
     xmlhttp.open("GET", "/product/" + articule, true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xmlhttp.send("");
 
 }
@@ -610,7 +612,6 @@ function setProductAmountInCart(articule, amount) {
 
         xmlhttp2.open("GET", "/cart/getprice", true);
         xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
         xmlhttp2.send("");
     }
 
@@ -618,6 +619,7 @@ function setProductAmountInCart(articule, amount) {
 
     xmlhttp.open("POST", "/cart/set", true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader(header,token);
 
     xmlhttp.send(msg);
 
@@ -686,6 +688,7 @@ function addOneProductIntoCart(articule) {
 
     xmlhttp.open("POST", "/cart/add", true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader(header,token);
 
     xmlhttp.send(msg);
 
@@ -745,7 +748,6 @@ function removeOneProductFromCart(articule) {
 
         xmlhttp2.open("GET", "/cart/getprice", true);
         xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
         xmlhttp2.send("");
     }
 
@@ -753,6 +755,7 @@ function removeOneProductFromCart(articule) {
 
     xmlhttp.open("POST", "/cart/removeone", true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader(header,token);
 
     xmlhttp.send(msg);
 
@@ -814,7 +817,6 @@ function removeProductsFromCart(articule) {
 
             xmlhttp2.open("GET", "/cart/getprice", true);
             xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
             xmlhttp2.send("");
         }
 
@@ -822,6 +824,7 @@ function removeProductsFromCart(articule) {
 
         xmlhttp.open("POST", "/cart/remove", true);
         xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.setRequestHeader(header, token);
 
         xmlhttp.send(msg);
     }
@@ -832,6 +835,7 @@ function removeProductsFromCart(articule) {
 }
 
 function removeAllProductsFromCart() {
+
     var answer = confirm("Удалить все товары из корзины?")
     if (answer) {
         var xmlhttp;
@@ -886,12 +890,12 @@ function removeAllProductsFromCart() {
 
             xmlhttp2.open("GET", "/cart/getprice", true);
             xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
             xmlhttp2.send("");
         }
 
         xmlhttp.open("POST", "/cart/removeall", true);
         xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.setRequestHeader(header,token);
 
         xmlhttp.send("");
     }
@@ -929,7 +933,6 @@ function getCart() {
 
     xmlhttp2.open("GET", window.location.pathname + "?ajax=1", true);
     xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xmlhttp2.send("");
 
 }

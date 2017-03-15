@@ -16,6 +16,9 @@
     <link href="/resources/css/balloon.min.css" rel="stylesheet" />
     <script type="text/javascript" src="/resources/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="/resources/js/javascript2.js"></script>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 

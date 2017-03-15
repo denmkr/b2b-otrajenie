@@ -1,6 +1,8 @@
 var groupId = "";
 
 $(document).ready(function () {
+    token = $("meta[name='_csrf']").attr("content");
+    header = $("meta[name='_csrf_header']").attr("content");
 
     setCurrentMenu();
     setCurrentElemSidebar();
@@ -108,7 +110,6 @@ function filterProducts() {
 
     xmlhttp.open("GET", pathArray[0] + '/' + pathArray[1] + '/' + pathArray[2] + '/1' + "?ajax=1&" + "groupId=" + groupId + "&" + msg, true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xmlhttp.send("");
 
     window.history.pushState(null, null, pathArray[0] + '/' + pathArray[1] + '/' + pathArray[2] + '/1' + "?" + "groupId=" + groupId + "&" + msg);
@@ -270,7 +271,6 @@ $(document).on("click", ".paginator li", function() {
 /* AJAX функции */
 
 function addToCart(articule) {
-
     var xmlhttp;
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -294,6 +294,7 @@ function addToCart(articule) {
 
     xmlhttp.open("POST", "/cart/add", true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader(header,token);
 
     xmlhttp.send(msg);
 
@@ -326,6 +327,7 @@ function removeFromCart(articule) {
 
     xmlhttp.open("POST", "/cart/remove", true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader(header,token);
 
     xmlhttp.send(msg);
 
@@ -358,7 +360,6 @@ function getCart() {
 
     xmlhttp2.open("GET", window.location.pathname + "?ajax=1", true);
     xmlhttp2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xmlhttp2.send("");
 
 }

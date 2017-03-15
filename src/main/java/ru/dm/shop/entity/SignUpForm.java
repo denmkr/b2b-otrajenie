@@ -7,16 +7,18 @@ import ru.dm.shop.validator.UniqueEmail;
 import ru.dm.shop.validator.UniqueUsername;
 
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @FieldEquals(field="password", equalsTo="confirmPassword")
 public class SignUpForm {
     @Size(min = 3, max = 40, message = "Логин должен иметь от 3 до 40 символов")
     @NotEmpty(message = "Введите логин")
+    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-._]*$", message = "Логин должен начинаться с буквы и содержать только латинские символы, цифры и символы \'.\', \'_\', \'-\'")
     @UniqueUsername
     private String username;
 
-    @Email(regexp = ".+@.+", message = "Введите правильный email")
+    @Email(regexp = ".+@.+", message = "Введите корректный email")
     @NotEmpty(message = "Введите email")
     @UniqueEmail
     private String email;

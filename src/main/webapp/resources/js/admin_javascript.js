@@ -1,6 +1,8 @@
 var page;
 
 $(document).ready(function () {
+    token = $("meta[name='_csrf']").attr("content");
+    header = $("meta[name='_csrf_header']").attr("content");
 
     var pathArray = window.location.pathname.split( '/' );
     if (pathArray[2]=="information" || pathArray[2]==null) getGraphic();
@@ -70,6 +72,7 @@ function getPage() {
     xmlhttp.open("POST", "/admin/" + page, true);
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
+    xmlhttp.setRequestHeader(header,token);
     xmlhttp.send("");
 
     window.history.pushState(null, null, "/admin/" + page);
