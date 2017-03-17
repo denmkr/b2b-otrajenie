@@ -1,6 +1,5 @@
 package ru.dm.shop.service.impl;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dm.shop.entity.User;
@@ -8,7 +7,6 @@ import ru.dm.shop.repository.UserRepository;
 import ru.dm.shop.service.UserService;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -20,13 +18,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User create(User user) {
-        BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(12);
-        user.setPassword(bcryptEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
-
-        java.util.Date date = new java.util.Date();
-        user.setDate(new Timestamp(date.getTime()));
-
         return userRepository.saveAndFlush(user);
     }
 
@@ -51,6 +42,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long countOfUsers() {
         return userRepository.countOfUsers();
+    }
+
+    @Override
+    public User update(User user) {
+        return userRepository.saveAndFlush(user);
     }
 
     @Override

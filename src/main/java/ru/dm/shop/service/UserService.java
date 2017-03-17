@@ -15,4 +15,5 @@ public interface UserService {
     User findByUsername(String username);
     User findByEmail(String email);
     Long countOfUsers();
+    User update(User user);
 }
