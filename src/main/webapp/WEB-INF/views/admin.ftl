@@ -14,6 +14,9 @@
     <script type="text/javascript" src="/resources/js/Chart.bundle.min.js"></script>
     <script type="text/javascript" src="/resources/js/Chart.min.js"></script>
     <script type="text/javascript" src="/resources/js/admin_javascript.js"></script>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 

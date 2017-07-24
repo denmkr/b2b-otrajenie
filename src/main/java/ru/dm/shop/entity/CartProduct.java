@@ -3,28 +3,15 @@ package ru.dm.shop.entity;
 import javax.persistence.*;
 
 /**
- * Created by Denis on 06.05.16.
+ * Created by denis on 19/06/2017.
  */
 @Entity
-@Table(name = "cart_products", schema = "public", catalog = "mvc")
+@Table(name = "cart_products", schema = "public", catalog = "otrajenie")
 public class CartProduct {
     private Long id;
-
     private Long userId;
     private Integer count;
-
-    /* */
     private Product product;
-
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    /* */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +42,16 @@ public class CartProduct {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override

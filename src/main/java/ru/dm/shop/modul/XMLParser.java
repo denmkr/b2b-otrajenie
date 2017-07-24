@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -149,20 +151,20 @@ public class XMLParser {
                         Element eElement2 = (Element) nNode2;
 
                         if (eElement2.getElementsByTagName("Ид").item(0).getTextContent().equals(eElement.getElementsByTagName("Ид").item(0).getTextContent())) {
-                            float wholesalePrice = 0;
-                            float retailPrice = 0;
+                            BigDecimal wholesalePrice = new BigDecimal(0).setScale(2, RoundingMode.DOWN);
+                            BigDecimal retailPrice = new BigDecimal(0).setScale(2, RoundingMode.DOWN);
                             String currency = " ";
                             if (eElement2.getElementsByTagName("Цены").item(0) != null) {
 
-                                wholesalePrice = (float) Double.parseDouble(eElement2.getElementsByTagName("ЦенаЗаЕдиницу").item(0).getTextContent());
+                                wholesalePrice = new BigDecimal(Double.parseDouble(eElement2.getElementsByTagName("ЦенаЗаЕдиницу").item(0).getTextContent())).setScale(2, RoundingMode.DOWN);
                                 System.out.println("Цена : " + wholesalePrice);
 
                                 if (eElement2.getElementsByTagName("ЦенаЗаЕдиницу").item(1) != null) {
-                                    retailPrice = (float) Double.parseDouble(eElement2.getElementsByTagName("ЦенаЗаЕдиницу").item(1).getTextContent());
+                                    retailPrice = new BigDecimal(Double.parseDouble(eElement2.getElementsByTagName("ЦенаЗаЕдиницу").item(1).getTextContent())).setScale(2, RoundingMode.DOWN);
                                     System.out.println("Цена : " + retailPrice);
                                 } else {
-                                    retailPrice = (float) 0;
-                                    wholesalePrice = (float) 0;
+                                    retailPrice = new BigDecimal(0).setScale(2, RoundingMode.DOWN);
+                                    wholesalePrice = new BigDecimal(0).setScale(2, RoundingMode.DOWN);
                                 }
 
 
@@ -186,7 +188,7 @@ public class XMLParser {
 
                             ProductGroup productGroup = new ProductGroup();
                             productGroup.setGroupId(groupId);
-                            products.add(new Product(article, name, stock, retailPrice, wholesalePrice, currency, productGroup));
+                            products.add(new Product(article, name, stock, retailPrice, currency, wholesalePrice, productGroup));
 
                         }
                     }

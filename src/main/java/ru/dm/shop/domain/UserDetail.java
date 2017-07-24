@@ -3,14 +3,24 @@ package ru.dm.shop.domain;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import ru.dm.shop.entity.Cart;
+import ru.dm.shop.entity.Product;
+import ru.dm.shop.entity.User;
+import ru.dm.shop.service.UserService;
 
 public class UserDetail implements UserDetails {
 	private static final long serialVersionUID = 8266525488057072269L;
 	private String username;
 	private String password;
 	private Collection<GrantedAuthority> authorities;
+
 
 	public UserDetail(String username, String password, String roles) {
 		super();
@@ -70,4 +80,6 @@ public class UserDetail implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+
 }

@@ -13,12 +13,21 @@ public class ErrorController {
 
     @RequestMapping(value = "/error404", method = RequestMethod.GET)
     public String error404() {
+        return "redirect:/404";
+    }
+
+    @RequestMapping(value = "/error403", method = RequestMethod.GET)
+    public String error403() {
+        return "redirect:/403";
+    }
+
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String e404() {
         return "404";
     }
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public String error403() {
+    public String e403() {
         return "403";
     }
-
 }

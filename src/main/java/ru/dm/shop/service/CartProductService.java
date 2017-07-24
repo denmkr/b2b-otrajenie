@@ -9,7 +9,7 @@ import ru.dm.shop.entity.Product;
  */
 public interface CartProductService {
     boolean addProduct(Product product);
-    boolean setProductAmount(Product product, int amount);
+    boolean setProductAmount(Product product, Integer amount);
     Cart getCart();
     boolean removeProduct(Product product);
     boolean removeProducts(Product product);

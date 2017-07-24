@@ -1,66 +1,103 @@
 package ru.dm.shop.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.dm.shop.entity.Cart;
-import ru.dm.shop.entity.CartProduct;
-import ru.dm.shop.entity.Order;
+import org.springframework.transaction.annotation.Transactional;
+import ru.dm.shop.entity.*;
 import ru.dm.shop.repository.OrderRepository;
+import ru.dm.shop.service.OrderProductService;
 import ru.dm.shop.service.OrderService;
+import ru.dm.shop.service.UserRoleService;
 import ru.dm.shop.service.UserService;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by alt on 04.02.17.
+ */
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
     @Resource
     public OrderRepository orderRepository;
-    @Autowired
+
+    @Resource
+    OrderProductService orderProductService;
+
+    @Resource
     UserService userService;
-    public Authentication authentication;
+
+    @Resource
+    UserRoleService userRoleService;
 
     @Override
-    public boolean createOrder(Cart cart) {
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+    @Transactional
+    public Order create(Cart cart) {
         Order order = new Order();
+        orderRepository.save(order);
 
-        for (CartProduct cartProduct : cart.getCartProducts()) {
-            order.setProduct(cartProduct.getProduct());
-            order.setCount(1);
-            order.setUser(userService.findByUsername(authentication.getName()));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            java.util.Date date = new java.util.Date();
-            order.setDate(new Timestamp(date.getTime()));
+        User user = userService.findByUsername(authentication.getName());
+        order.setUser(user);
+        order.setDate(new Timestamp(System.currentTimeMillis()));
 
-            orderRepository.saveAndFlush(order);
+        List<CartProduct> cartProducts = cart.getCartProducts();
+
+        for (CartProduct cartProduct : cartProducts) {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setProduct(cartProduct.getProduct());
+            orderProduct.setQuantity(cartProduct.getCount());
+
+            if (user != null) {
+                if (((userRoleService.findByUserId(user.getId())).getAuthority()).equals("ROLE_PARTNER")) {
+                    orderProduct.setPrice(cartProduct.getProduct().getWholesalePrice());
+                } else {
+                    orderProduct.setPrice(cartProduct.getProduct().getRetailPrice());
+                }
+            }
+
+            orderProduct.setOrder(order);
+            orderProductService.create(orderProduct);
         }
 
-        return true;
+        return orderRepository.saveAndFlush(order);
     }
 
     @Override
-    public List<Order> getOrders() {
+    @Transactional
+    public Order delete(long id) {
+        Order order = orderRepository.findOne(id);
+        orderRepository.delete(order);
+        return order;
+    }
+
+    @Override
+    public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Order update(Order order) {
+        return orderRepository.saveAndFlush(order);
+    }
+
+    @Override
+    public Order findById(long id) {
+        return orderRepository.findOne(id);
+    }
+
+    @Override
+    public List<Order> findAllByUser(User user) {
+        return orderRepository.findAllByUser(user);
     }
 
     @Override
     public Long countOfOrdersToday() {
         return orderRepository.countOfOrdersToday();
-    }
-
-    @Override
-    public List<Long> getOrdersCounts() {
-        List<Long> counts = new ArrayList<Long>();
-        for (int i=1; i<=30; i++) {
-            counts.add(orderRepository.countOfOrdersByDay(i));
-        }
-
-        return counts;
     }
 }

@@ -1,31 +1,32 @@
 package ru.dm.shop.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
- * Created by Denis on 07.05.16.
+ * Created by denis on 18/06/2017.
  */
 @Entity
-@Table(name = "products", schema = "public", catalog = "mvc")
+@Table(name = "products", schema = "public", catalog = "otrajenie")
 public class Product {
     private Long id;
     private String articule;
     private String name;
     private Integer stock;
-    private Float retailPrice;
-    private Float wholesalePrice;
+    private BigDecimal retailPrice;
     private String currency;
+    private BigDecimal wholesalePrice;
 
     public Product() {
     }
 
-    public Product(String articule, String name, Integer stock, Float retailPrice, Float wholesalePrice, String currency, ProductGroup group) {
+    public Product(String articule, String name, Integer stock, BigDecimal retailPrice, String currency, BigDecimal wholesalePrice, ProductGroup group) {
         this.articule = articule;
         this.name = name;
         this.stock = stock;
         this.retailPrice = retailPrice;
-        this.wholesalePrice = wholesalePrice;
         this.currency = currency;
+        this.wholesalePrice = wholesalePrice;
         this.group = group;
     }
 
@@ -71,23 +72,13 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "retail_price")
-    public Float getRetailPrice() {
+    @Column(name = "retail_price", precision = 19, scale = 7, columnDefinition="NUMBER(19,7)")
+    public BigDecimal getRetailPrice() {
         return retailPrice;
     }
 
-    public void setRetailPrice(Float retailPrice) {
+    public void setRetailPrice(BigDecimal retailPrice) {
         this.retailPrice = retailPrice;
-    }
-
-    @Basic
-    @Column(name = "wholesale_price")
-    public Float getWholesalePrice() {
-        return wholesalePrice;
-    }
-
-    public void setWholesalePrice(Float wholesalePrice) {
-        this.wholesalePrice = wholesalePrice;
     }
 
     @Basic
@@ -98,6 +89,16 @@ public class Product {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    @Basic
+    @Column(name = "wholesale_price", precision = 19, scale = 7, columnDefinition="NUMBER(19,7)")
+    public BigDecimal getWholesalePrice() {
+        return wholesalePrice;
+    }
+
+    public void setWholesalePrice(BigDecimal wholesalePrice) {
+        this.wholesalePrice = wholesalePrice;
     }
 
     /* */
@@ -125,8 +126,10 @@ public class Product {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (stock != null ? !stock.equals(that.stock) : that.stock != null) return false;
         if (retailPrice != null ? !retailPrice.equals(that.retailPrice) : that.retailPrice != null) return false;
-        if (wholesalePrice != null ? !wholesalePrice.equals(that.wholesalePrice) : that.wholesalePrice != null) return false;
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
+        if (group != null ? !group.equals(that.group) : that.group != null) return false;
+        if (wholesalePrice != null ? !wholesalePrice.equals(that.wholesalePrice) : that.wholesalePrice != null)
+            return false;
 
         return true;
     }
@@ -138,10 +141,9 @@ public class Product {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (stock != null ? stock.hashCode() : 0);
         result = 31 * result + (retailPrice != null ? retailPrice.hashCode() : 0);
-        result = 31 * result + (wholesalePrice != null ? wholesalePrice.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (group != null ? group.hashCode() : 0);
+        result = 31 * result + (wholesalePrice != null ? wholesalePrice.hashCode() : 0);
         return result;
     }
-
-
 }

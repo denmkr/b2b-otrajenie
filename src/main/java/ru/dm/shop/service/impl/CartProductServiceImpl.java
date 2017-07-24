@@ -17,7 +17,6 @@ import ru.dm.shop.service.ProductService;
 import ru.dm.shop.service.UserService;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service
 public class CartProductServiceImpl implements CartProductService {
@@ -38,7 +37,7 @@ public class CartProductServiceImpl implements CartProductService {
         cartProduct = cartProductRepository.findByUserIdAndProductId(userService.findByUsername(authentication.getName()).getId(), productService.findByArticule(product.getArticule()).getId());
 
         if (cartProduct != null) {
-            int count = cartProduct.getCount();
+            Integer count = cartProduct.getCount();
             product = productService.findByArticule(product.getArticule());
             cartProductRepository.updateProductInCart(count + 1, userService.findByUsername(authentication.getName()).getId(), product);
         }
@@ -55,13 +54,13 @@ public class CartProductServiceImpl implements CartProductService {
     }
 
     @Override
-    public boolean setProductAmount(Product product, int amount) {
+    public boolean setProductAmount(Product product, Integer amount) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CartProduct cartProduct;
         cartProduct = cartProductRepository.findByUserIdAndProductId(userService.findByUsername(authentication.getName()).getId(), productService.findByArticule(product.getArticule()).getId());
 
-        int count = cartProduct.getCount();
+        Integer count = cartProduct.getCount();
         product = productService.findByArticule(product.getArticule());
         cartProductRepository.updateProductInCart(amount, userService.findByUsername(authentication.getName()).getId(), product);
 
@@ -73,10 +72,14 @@ public class CartProductServiceImpl implements CartProductService {
     public Cart getCart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PageRequest pageRequest = new PageRequest(0, 100, Sort.Direction.ASC, "product");
-        Page<CartProduct> cartProducts = cartProductRepository.findByUserId(userService.findByUsername(authentication.getName()).getId(), pageRequest);
+
+        Page<CartProduct> cartProducts = null;
+
+        if (authentication != null) cartProducts = cartProductRepository.findByUserId(userService.findByUsername(authentication.getName()).getId(), pageRequest);
 
         Cart cart = new Cart();
-        cart.setProducts(cartProducts.getContent());
+
+        if (cartProducts != null) cart.setProducts(cartProducts.getContent());
 
         return cart;
     }
@@ -87,7 +90,7 @@ public class CartProductServiceImpl implements CartProductService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CartProduct cartProduct = cartProductRepository.findByUserIdAndProductId(userService.findByUsername(authentication.getName()).getId(), productService.findByArticule(product.getArticule()).getId());
 
-        int count = cartProduct.getCount();
+        Integer count = cartProduct.getCount();
         if (count > 1) {
             product = productService.findByArticule(product.getArticule());
             cartProductRepository.updateProductInCart(count - 1, userService.findByUsername(authentication.getName()).getId(), product);

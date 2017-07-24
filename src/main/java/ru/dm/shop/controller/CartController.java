@@ -48,7 +48,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addToCart(ModelMap model, @RequestParam(value = "articule", required = true) String articule, @RequestParam(value = "amount", required = true) int amount, HttpSession session) {
+    public String addToCart(ModelMap model, @RequestParam(value = "articule", required = true) String articule, @RequestParam(value = "amount", required = true) Integer amount, HttpSession session) {
 
         Product product = new Product();
         product.setArticule(articule);
@@ -85,7 +85,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/set", method = RequestMethod.POST)
-    public String setAmountToCart(ModelMap model, @RequestParam(value = "articule", required = true) String articule, @RequestParam(value = "amount", required = true) int amount, HttpSession session) {
+    public String setAmountToCart(ModelMap model, @RequestParam(value = "articule", required = true) String articule, @RequestParam(value = "amount", required = true) Integer amount, HttpSession session) {
 
         Product product = new Product();
         product.setArticule(articule);

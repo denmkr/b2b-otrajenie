@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 
 <html>
 <head>
@@ -7,9 +8,9 @@
 </head>
 <body>
 
-<form method="POST" action="/database">
+<@form.form method="POST" action="/database">
     <input type="submit" value="UpdateData"> Press here to update database from new files!
-</form>
+</@form.form>
 
 </body>
 </html>

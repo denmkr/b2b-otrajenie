@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 
 <header>
     <div class="user">
@@ -11,7 +12,7 @@
 </header>
 
 <div class="table_panel">
-    <form method="POST" style="margin: 0 3%;text-align: left;" action="/admin/products/addProduct">
+    <@form.form method="POST" style="margin: 0 3%;text-align: left;" action="/admin/products/addProduct">
         <input type="text" name="name" placeholder="Название"><br />
         <input type="text" name="articule" placeholder="Артикул"><br />
         <input type="text" name="stock" placeholder="Количество на складе"><br />
@@ -30,6 +31,6 @@ background: #3f4755;
 color: #fff;cursor: pointer;
 margin-top: 60px;" type="submit" value="Добавить товар">
 
-    </form>
+    </@form.form>
 </div>
 

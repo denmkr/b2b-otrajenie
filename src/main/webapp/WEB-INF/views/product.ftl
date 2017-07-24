@@ -1,5 +1,9 @@
 <#ftl encoding="utf-8">
+<#setting locale="ru_RU">
+
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"] />
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 
 <#include "modules/header.ftl">
 
@@ -18,6 +22,8 @@
     </div>
 </header>
 
+<!-- Sidebar -->
+<#include "modules/aside.ftl">
 
 <!-- Главный блок -->
 <div class="main">

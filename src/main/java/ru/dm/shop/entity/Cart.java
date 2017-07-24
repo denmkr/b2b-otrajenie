@@ -2,9 +2,9 @@ package ru.dm.shop.entity;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,21 +33,27 @@ public class Cart {
         return size;
     }
 
-    public Float getPrice() {
-        Float price = new Float(0);
+    public BigDecimal getPrice() {
+        BigDecimal price = new BigDecimal(0);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        for (GrantedAuthority authority: authentication.getAuthorities()) {
-            if (authority.getAuthority().equals("ROLE_PARTNER")) {
-                for (CartProduct cartProduct : cartProducts) {
-                    price += cartProduct.getProduct().getWholesalePrice() * cartProduct.getCount();
+        if (authentication != null) {
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_PARTNER")) {
+                    for (CartProduct cartProduct : cartProducts) {
+                        price = price.add(cartProduct.getProduct().getWholesalePrice().multiply(new BigDecimal(cartProduct.getCount())));
+                    }
+                } else {
+                    for (CartProduct cartProduct : cartProducts) {
+                        price = price.add(cartProduct.getProduct().getRetailPrice().multiply(new BigDecimal(cartProduct.getCount())));
+                    }
                 }
             }
-            else {
-                for (CartProduct cartProduct : cartProducts) {
-                    price += cartProduct.getProduct().getRetailPrice() * cartProduct.getCount();
-                }
+        }
+        else {
+            for (CartProduct cartProduct : cartProducts) {
+                price = price.add(cartProduct.getProduct().getRetailPrice().multiply(new BigDecimal(cartProduct.getCount())));
             }
         }
 
@@ -58,8 +64,8 @@ public class Cart {
         return cartProducts;
     }
 
-    public int getSizeByArticule(String articule) {
-        int size = 0;
+    public Integer getSizeByArticule(String articule) {
+        Integer size = 0;
 
         for (CartProduct cartProduct : cartProducts) {
             if (cartProduct.getProduct().getArticule().equals(articule)) {

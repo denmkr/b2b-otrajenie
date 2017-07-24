@@ -16,7 +16,6 @@ import ru.dm.shop.service.ProductService;
 import ru.dm.shop.service.UserService;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 
 /**
@@ -60,7 +59,7 @@ public class CatalogController {
             groupId = "";
         }
 
-        Page<Product> products = productService.findAll(groupId, page, stock, StringEscapeUtils.escapeHtml4(search), StringEscapeUtils.escapeHtml4(search), sort, Integer.parseInt(count));
+        Page<Product> products = productService.findAll(StringEscapeUtils.escapeHtml4(groupId), page, StringEscapeUtils.escapeHtml4(stock), StringEscapeUtils.escapeHtml4(search), StringEscapeUtils.escapeHtml4(search), StringEscapeUtils.escapeHtml4(sort), Integer.parseInt(StringEscapeUtils.escapeHtml4(count)));
 
         // Page<Product> products = productService.findAll(groupId, page, stock, StringEscapeUtils.escapeHtml4(new String(search.getBytes("ISO-8859-1"), "UTF-8")), StringEscapeUtils.escapeHtml4(new String(search.getBytes("ISO-8859-1"), "UTF-8")), sort, Integer.parseInt(count));
 
@@ -82,6 +81,12 @@ public class CatalogController {
 
         if (ajax.equals("1")) return "ajax/catalog_content";
         else return "catalog";
+    }
+
+    @RequestMapping(value = "catalog/breadcrumbs", method = RequestMethod.GET)
+    public String getBreadcrumbs(ModelMap model, @RequestParam(value = "groupId", required = false, defaultValue = "") String groupId) {
+        model.addAttribute("currentGroup", groupService.findByGroupId(groupId));
+        return "modules/breadcrumbs";
     }
 
 }

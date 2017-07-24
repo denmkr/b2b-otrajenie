@@ -1,4 +1,5 @@
 <#ftl encoding="utf-8">
+<#setting locale="ru_RU">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
 <div class="photo">

@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 
 <!DOCTYPE html>
 
@@ -14,7 +15,6 @@
     <script type="text/javascript" src="/resources/js/jquery.sticky.js"></script>
     <script type="text/javascript" src="/resources/js/jquery.stellar.js"></script>
     <script type="text/javascript" src="/resources/js/javascript.js"></script>
-
 </head>
 <body>
 
@@ -29,12 +29,12 @@
         </div>
         <div class="modal animated flipInXSmall">
             <div class="title">Авторизация</div>
-            <form id="signin_form" action="j_spring_security_check" id="auth" method="POST">
+            <@form.form id="signin_form" action="j_spring_security_check" acceptCharset="UTF-8" method="POST">
                 <input type="text" name="j_username" placeholder="Логин">
                 <input type="password" name="j_password" placeholder="Пароль">
                 <input style="display: none;" type="checkbox" name="remember-me" checked="checked" />
                 <div class="button" onkeydown="" onclick="document.getElementById('signin_form').submit();">Войти</div>
-            </form>
+            </@form.form>
             <#if error??>
                 <div class="wrong_data">
                     Неправильный логин или пароль

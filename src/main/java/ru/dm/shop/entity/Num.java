@@ -1,11 +1,13 @@
 package ru.dm.shop.entity;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Denis on 25.05.16.
  */
 public class Num {
     int num;
-    float fNum;
+    BigDecimal fNum;
 
     public int getNum() {
         return num;
@@ -15,11 +17,11 @@ public class Num {
         this.num = num;
     }
 
-    public float getfNum() {
+    public BigDecimal getfNum() {
         return fNum;
     }
 
-    public void setfNum(float fNum) {
+    public void setfNum(BigDecimal fNum) {
         this.fNum = fNum;
     }
 }

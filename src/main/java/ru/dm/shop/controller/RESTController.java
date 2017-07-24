@@ -17,6 +17,7 @@ import ru.dm.shop.entity.*;
 import ru.dm.shop.service.*;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -27,8 +28,8 @@ public class RESTController {
     UserService userService;
     @Autowired
     ProductService productService;
-    @Autowired
-    OrderService orderService;
+    /* @Autowired
+    OrderService orderService; */
     @Autowired
     GroupService groupService;
     @Autowired
@@ -83,7 +84,7 @@ public class RESTController {
         return groups;
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public @ResponseBody
     List<Order> getAllOrders() {
         List<Order> orders = orderService.getOrders();
@@ -94,7 +95,7 @@ public class RESTController {
         }
 
         return orders;
-    }
+    } */
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public @ResponseBody
@@ -121,8 +122,8 @@ public class RESTController {
         Product product = new Product();
         product.setName(name);
         product.setArticule(articule);
-        product.setRetailPrice(Float.parseFloat(price));
-        product.setWholesalePrice(Float.parseFloat(price));
+        product.setRetailPrice(new BigDecimal(price));
+        product.setWholesalePrice(new BigDecimal(price));
         product.setStock(Integer.parseInt(stock));
         product.setCurrency(currency);
         product.setProductGroup(groupService.findById(Long.parseLong(groupId)));

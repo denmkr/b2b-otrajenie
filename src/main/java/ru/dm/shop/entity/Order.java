@@ -1,17 +1,25 @@
 package ru.dm.shop.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
- * Created by Denis on 10.05.16.
+ * Created by alt on 04.02.17.
  */
 @Entity
-@Table(name = "orders", schema = "public", catalog = "mvc")
+@Table(name = "orders", schema = "public")
 public class Order {
     private Long id;
-    private Integer count;
     private Timestamp date;
+    private User user;
+    private List<Product> products;
+    private List<OrderProduct> orderProducts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +33,6 @@ public class Order {
     }
 
     @Basic
-    @Column(name = "count")
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    @Basic
     @Column(name = "date")
     public Timestamp getDate() {
         return date;
@@ -44,31 +42,15 @@ public class Order {
         this.date = date;
     }
 
-    /* */
-    private User user;
-
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
-    /* */
-
-    /* */
-    private Product product;
-
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    /* */
 
     @Override
     public boolean equals(Object o) {
@@ -78,7 +60,6 @@ public class Order {
         Order that = (Order) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (count != null ? !count.equals(that.count) : that.count != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
 
         return true;
@@ -87,8 +68,34 @@ public class Order {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (count != null ? count.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
+    }
+
+    @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "orders_products",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name="order_id")
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

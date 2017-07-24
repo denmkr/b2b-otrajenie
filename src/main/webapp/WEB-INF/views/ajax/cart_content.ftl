@@ -1,100 +1,84 @@
 <#ftl encoding="utf-8">
+<#setting locale="ru_RU">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
-
-<div class="panel_container">
-    <div class="panel">
-        <div class="filter">
-            <div class="first-column">
-                <ul class="breadcrumbs">
-                    <li><a style="font-size: 22px;font-weight: 300;" href="/cart">Корзина</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 
 <#if cart.cartProducts??>
     <#if cart.size!=0>
         <div class="table_panel">
             <div class="inside">
-                <div class="info">В корзине товаров: <a>${cart.size}</a></div>
-                <table class="cart_table">
+                <table class="cart_table catalog_table">
                     <thead>
-                    <th>Артикул</th>
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Количество</th>
-                    <th>Общая стоимость</th>
-                    <th>Удалить</th>
+                        <th><a>Артикул</a><i class="mdi mdi-chevron-down"></i></th>
+                        <th><a>Название</a><i class="mdi mdi-chevron-down"></i></th>
+                        <th><a>Цена</a><i class="mdi mdi-chevron-down"></i></th>
+                        <th><a>Количество</a><i class="mdi mdi-chevron-down"></i></th>
+                        <th><a>Общая стоимость</a><i class="mdi mdi-chevron-down"></i></th>
+                        <th class="cart"><a>Удалить</a></th>
                     </thead>
                     <tbody>
                         <#list cart.cartProducts as cartProduct>
                         <tr>
                             <td><a>${cartProduct.product.articule}</a></td>
-                            <td><a style="color: #4e7fa9; cursor: pointer;" onclick="getProduct('${cartProduct.product.articule}');">${cartProduct.product.name}</a></td>
+                            <td><a style="color: #618ce5; cursor: pointer;" onclick="getProduct('${cartProduct.product.articule}');">${cartProduct.product.name}</a></td>
                             <@security.authorize access="hasRole('ROLE_USER')">
-                                <td><a>${cartProduct.product.retailPrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${cartProduct.product.retailPrice?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
                             <@security.authorize access="hasRole('ROLE_PARTNER')">
-                                <td><a>${cartProduct.product.wholesalePrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${cartProduct.product.wholesalePrice?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
                             <@security.authorize access="isAnonymous()">
-                                <td><a>${cartProduct.product.retailPrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${cartProduct.product.retailPrice?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
+                            </@security.authorize>
+                            <@security.authorize access="hasRole('ROLE_ADMIN')">
+                                <td><a>${cartProduct.product.retailPrice?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
                             <td class="cart">
-                                <input name="amount" maxlength="3" type="text" onkeyup="if(event.keyCode == 13) setProductAmountInCart('${cartProduct.product.articule}', $(this).val())" value="${cartProduct.count}"/>
+                                <form id="cart_form_set" class="cart_form">
+                                <input name="amount" maxlength="2" type="text" placeholder="0" value="${cartProduct.count}"/>
                                 <div class="buttons">
-                                    <div onclick="addOneProductIntoCart('${cartProduct.product.articule}')" class="plus"><img src="/resources/images/user_down.png"></div>
-                                    <div onclick="removeOneProductFromCart('${cartProduct.product.articule}')" class="minus"><img src="/resources/images/user_down.png"></div>
+                                    <div onclick="addOneProductIntoCart('${cartProduct.product.articule}')" class="plus"><i class="mdi mdi-chevron-up"></i></div>
+                                    <div onclick="removeOneProductFromCart('${cartProduct.product.articule}')" class="minus"><i class="mdi mdi-chevron-down"></i></div>
                                 </div>
+                                </form>
                             </td>
                             <@security.authorize access="hasRole('ROLE_USER')">
-                                <td><a>${cartProduct.count * cartProduct.product.retailPrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${(cartProduct.count * cartProduct.product.retailPrice)?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
                             <@security.authorize access="hasRole('ROLE_PARTNER')">
-                                <td><a>${cartProduct.count * cartProduct.product.wholesalePrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${(cartProduct.count * cartProduct.product.wholesalePrice)?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
                             <@security.authorize access="isAnonymous()">
-                                <td><a>${cartProduct.count * cartProduct.product.retailPrice}</a> ${cartProduct.product.currency}</td>
+                                <td><a>${(cartProduct.count * cartProduct.product.retailPrice)?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
                             </@security.authorize>
-                            <td onclick="removeProductsFromCart('${cartProduct.product.articule}')" class="into_cart">
-                                <a style="cursor:pointer;">Удалить</a>
+                            <@security.authorize access="hasRole('ROLE_ADMIN')">
+                                <td><a>${(cartProduct.count * cartProduct.product.retailPrice)?string["0.##########"]}</a> ${cartProduct.product.currency}</td>
+                            </@security.authorize>
+                            <td class="remove">
+                                <div class="button" onclick="removeProductsFromCart('${cartProduct.product.articule}')"><i class="mdi mdi-close"></i></div>
                             </td>
                         </tr>
                         </#list>
                     </tbody>
                 </table>
 
-                <table class="cart_table bottom">
-                    <tbody>
-                    <tr>
-                        <td><a>Общее</a></td>
-                        <td><a></a></td>
-                        <td><a></a></td>
-                        <td><a>${cart.size}</a>
-                        </td>
-                        <td><a style="font-size: 19px;">${cart.price}</a> руб.</td>
-                        <td onclick="removeAllProductsFromCart()"><a style="cursor: pointer;">Удалить все</a></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <a href="/placeorder/email"><div style="margin-top: 100px;
-font-size: 1.1rem;
-color: #3c6689;
-width: 200px;
-display: block;
-
-border: 1px solid #3c6689;
-transition: all 0.3s ease-out;"><span style="display: inline-block;
-vertical-align: middle;
-padding: 14px 20px;
-color: #3c6689;">Оформить заказ</span><img style="display: inline-block;
-vertical-align: middle;
-padding: 14px;
-width: 20px;
-border-left: 1px solid #3c6689;
-display: none;" src="/resources/images/right-arrow.png"</div></a>
+                <div class="cart_bottom">
+                    <div class="inside">
+                        <div class="row middle">
+                            <div class="col-4 left">
+                                <div class="removeall" onclick="removeAllProductsFromCart()"><a>Удалить все</a></div>
+                                <div class="amount">В корзине: ${cart.size}</div>
+                            </div>
+                            <div class="col-8 right">
+                                <div class="sum"><a>Итого ${cart.price?string["0.##########"]}</a> руб.</div>
+                                <a href="/placeorder/email">
+                                    <div class="button">
+                                        <span>Оформить заказ</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     <#else>

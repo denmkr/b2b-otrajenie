@@ -4,7 +4,6 @@ package ru.dm.shop.entity;
  * Created by Denis on 08.02.16.
  */
 public class GroupChild {
-
     String name;
     String id;
     int childsCount;
